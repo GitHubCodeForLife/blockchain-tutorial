@@ -1,0 +1,154 @@
+<html lang="en">
+
+  <head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery library -->
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    ></script>
+
+    <!-- Popper JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"
+    ></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    ></script>
+    <!-- Add icon library -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://twemoji.maxcdn.com/2/svg/1f1fb-1f1f3.svg"
+    />
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/index.js"></script>
+  </head>
+  <body>
+    {{! navigation }}
+    <nav class="navbar navbar-light bg-light justify-content-between">
+      <a class="navbar-brand">Navbar</a>
+      <div class="nav-right">
+        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">Home</a>
+        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">History</a>
+        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">Login</a>
+        <span class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Dropdown button
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </span>
+      </div>
+    </nav>
+
+    <div class="content">
+      <!-- Button to Open the Modal -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#myModal"
+      >
+        Send Coin
+      </button>
+      <!-- Button to Open the Modal -->
+      <a
+        href="/mine-transactions"
+        type="button"
+        class="btn btn-success"
+        id="btn-mine"
+      >
+        Mine
+      </a>
+
+      <!-- The Modal -->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Send Coin</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+              >&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <!--form modal : amount, recipient-->
+              <form action="/transact" method="POST" id="send-form">
+                <div class="col-auto">
+                  <label for="staticEmail2">Recipient</label>
+                  <input
+                    type="text"
+                    name="recipient"
+                    class="form-control"
+                    id="recipient"
+                    required
+                  />
+                </div>
+                <div class="col-auto">
+                  <label for="staticEmail2">Amount</label>
+                  <input
+                    type="number"
+                    name="amount"
+                    id="amount"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-auto">
+                  <br />
+                  <button type="submit" class="btn btn-primary">
+                    Send
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-dismiss="modal"
+              >Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{{body}}}
+    </div>
+  </body>
+</html>

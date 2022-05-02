@@ -1,0 +1,25 @@
+Done: 
+- Started: 
+	+ Block : calculateHash
+	+ Blockchain: createGenesisBlock, getLatestBlock, 
+addBlock, genetateNextBlock
+- Mine-block
+	+ Blockchian: isChainValid 	
+- Proof of work
+	+ Block: mineBlock
+	+ BlockChain: AddBlock
+dificulty : Static in Block or an attribute in BlockChain
+
+- Reward and transaction: 
+	+Transaction: fromAddress, toAdress, amount
+	+ Wallet simple : caculate all amount from all 
+- Signing transaction: 
+	+ Blocks
+	+ Transaction:from, to , amout
+	
+
+===============================================
+Require: 
+
+
+

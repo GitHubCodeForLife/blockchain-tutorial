@@ -1,0 +1,57 @@
+<div>
+  <div class="row">
+    <div class="col-12 col-lg-6 latest">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Latest Blocks
+          </h3>
+        </div>
+        <ul class="listrap">
+          {{#each chains}}
+            <li>
+              <div class="listrap-toggle">
+                <span></span>
+                <img
+                  src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
+                  class="img-circle"
+                />
+              </div>
+              <strong>Hash: {{this.hash}}</strong>
+
+              <strong>Last Hash: {{this.lastHash}}</strong>
+              <strong>Miner:{{this.miner}}</strong>
+              <div>
+                <p>{{this.timestamp}}</p>
+              </div>
+            </li>
+          {{/each}}
+
+        </ul>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 latest">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Latest Transactions
+          </h3>
+        </div>
+        <ul class="listrap">
+
+          <li>
+            <div class="listrap-toggle">
+              <span></span>
+              <img
+                src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
+                class="img-circle"
+              />
+            </div>
+            <strong>My Lorem Option #1</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

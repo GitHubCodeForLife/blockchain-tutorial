@@ -1,0 +1,51 @@
+[
+    {
+        "wallet": {
+            "publicKey": "0463c3d8e09928fa16ec38480f4aeb48e01265b423babdd356aadbf9187bf6485f26aca9b575d13d584a1c6ec8b78cc075183c34862a1e4b5ac7ff4c0dc13921b5"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "04511a214ee22cb2f8e6007ad1d5b7b7ba596c11b5f61f79373acb6ed0e6f235b30a80a45d77d5cab8d9ebc72129d353eb720c9741cd69d12d3e44f5ae20ef7e3f"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "047b8aac0a879290421e5e616f10eb0bf99e1fed491c9fe3ae15243ee1ef91094e5710b9eb633351167b20781a7895eb98fe1b0e41e3a565051f2c9fc4a7b62d59"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "041f492e5dc66319c9ea921aa0039c239c9de2dc2fd9d0e29e7df8a9a557dabfd4d1d2adfd82479e22afdbdc791699c4fd0245c87624345e8375b4d254475e8c2e"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "04f3b796a3a1e962b17c89f3a379e5ffbbc088abdae6846363285379cc1ae6bb9c65390181a0b33a4baf9177d518e107983a70c1df06fdb952398df7510237870a"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "04c63e18069dcf9be9f74b677ceb54291e08906e4d46479fe0c795f8daeaea813238f2268bb7c111ed3fd43e02c640d01449f3bd063de6703748ada3578ea7a9d8"
+        },
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "wallet": {
+            "publicKey": "04c6ca2037761137550bbf639f8f2e128cb30ff392169e373182003a31e47f5c1a46ad28e50c6d4ac1776f8b2a8ed959f6ee6254710aeeecdfa1cbb0396f42193e"
+        },
+        "username": "04c6ca2037761137550bbf639f8f2e128cb30ff392169e373182003a31e47f5c1a46ad28e50c6d4ac1776f8b2a8ed959f6ee6254710aeeecdfa1cbb0396f42193e",
+        "password": "admin"
+    }
+]
