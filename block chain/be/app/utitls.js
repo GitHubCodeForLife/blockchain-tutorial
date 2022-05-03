@@ -53,9 +53,23 @@ function cleanData(transactions, type = "pending") {
   });
   return transactions;
 }
+function formatBlock(block, isDetail = false) {
+  if (typeof block.timestamp !== "string")
+    block.timestamp = new Date(block.timestamp).toLocaleString();
+  if (block.data.length > 0) {
+    block.miner =
+      isDetail == false
+        ? formatString(block.data[1].outputs[0].address)
+        : block.data[1].outputs[0].address;
+  } else {
+    block.miner = "System";
+  }
+  return block;
+}
 
 exports.formatString = formatString;
 exports.formatPendingTransactions = formatPendingTransactions;
 exports.formatSuccessTransactions = formatSuccessTransactions;
 exports.takeTransactions = takeTransactions;
 exports.cleanData = cleanData;
+exports.formatBlock = formatBlock;

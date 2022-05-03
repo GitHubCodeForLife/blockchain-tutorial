@@ -4,7 +4,6 @@ class Account {
   constructor() {
     this.readFromFile();
   }
-
   saveToFile(username, password) {
     const newUser = { username: username, password: password };
     this.accounts = [...this.accounts, newUser];

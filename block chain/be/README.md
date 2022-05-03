@@ -35,6 +35,13 @@ To start run the following command:
   HTTP_PORT = 3001
   PEERS =ws://localhost:5000
 
+- the third times:
+  P2P_PORT= 5002
+  HTTP_PORT = 3002
+  PEERS =ws://localhost:5000,ws://localhost:5001
+
 ```
 
+Tham khảo:
+https://github.com/kashishkhullar/blockchain-nodejs
 ```

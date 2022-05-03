@@ -1,10 +1,5 @@
 const Block = require("./block");
-const {
-  formatSuccessTransactions,
-  formatString,
-  takeTransactions,
-  cleanData,
-} = require("../app/utitls");
+const { takeTransactions, cleanData, formatBlock } = require("../app/utitls");
 class Blockchain {
   constructor() {
     this.chain = [Block.genesis()];
@@ -111,9 +106,13 @@ class Blockchain {
   getAllBlocks() {
     let blocks = [];
     const chainsCopy = [...this.chain];
-    for (let i = 0; i < chainsCopy.length; i++) {
-      blocks.push(chainsCopy[i]);
+
+    for (let i = chainsCopy.length - 1; i >= 0; i--) {
+      blocks = [...blocks, chainsCopy[i]];
     }
+
+    blocks = blocks.map((block) => formatBlock(block));
+
     return blocks;
   }
 
@@ -121,7 +120,7 @@ class Blockchain {
     for (let i = 0; i < this.chain.length; i++) {
       const block = this.chain[i];
       if (block.hash === hash) {
-        return block;
+        return formatBlock(block, true);
       }
     }
     return null;
