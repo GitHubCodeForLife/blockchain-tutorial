@@ -41,14 +41,37 @@
     <script src="./js/index.js"></script>
   </head>
   <body>
-    {{! navigation }}
     <nav class="navbar navbar-light bg-light justify-content-between">
-      <a class="navbar-brand">Navbar</a>
+      <a class="navbar-brand">BTC COIN</a>
       <div class="nav-right">
-        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">Home</a>
-        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">History</a>
-        <a class="btn btn-outline-success my-2 my-sm-0 navbar-brand">Login</a>
-        <span class="dropdown">
+        {{#if isLogin}}
+          <a
+            href="/"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >Home</a>
+          <a
+            href="/history"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >History</a>
+          <a
+            href="/logout"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >Logout</a>
+        {{else}}
+          <a
+            href="/history"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >History</a>
+          <a
+            href="/login"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >Login</a>
+          <a
+            href="/register"
+            class="btn btn-outline-success my-2 my-sm-0 navbar-brand"
+          >Register</a>
+        {{/if}}
+        {{!-- <span class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle"
             type="button"
@@ -64,11 +87,11 @@
             <a class="dropdown-item" href="#">Another action</a>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
-        </span>
+        </span> --}}
       </div>
     </nav>
 
-    <div class="content">
+{{#if isLogin}}
       <!-- Button to Open the Modal -->
       <button
         type="button"
@@ -79,14 +102,13 @@
         Send Coin
       </button>
       <!-- Button to Open the Modal -->
-      <a
-        href="/mine-transactions"
+      <button
         type="button"
         class="btn btn-success"
         id="btn-mine"
       >
         Mine
-      </a>
+      </button>
 
       <!-- The Modal -->
       <div class="modal" id="myModal">
@@ -106,7 +128,7 @@
             <!-- Modal body -->
             <div class="modal-body">
               <!--form modal : amount, recipient-->
-              <form action="/transact" method="POST" id="send-form">
+              <form action="/api/transact" method="POST" id="send-form">
                 <div class="col-auto">
                   <label for="staticEmail2">Recipient</label>
                   <input
@@ -148,7 +170,14 @@
         </div>
       </div>
 
+    
+     <div id="result"></div>
+        {{/if}}
+     <div class="container-fluid">
+
       {{{body}}}
+     </div>
     </div>
+    
   </body>
 </html>

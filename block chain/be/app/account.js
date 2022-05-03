@@ -2,8 +2,7 @@ const fs = require("fs");
 const url = "./blockchain.json";
 class Account {
   constructor() {
-    this.accounts = this.readFromFile();
-    this.accounts = JSON.parse(this.accounts);
+    this.readFromFile();
   }
 
   saveToFile(username, password) {
@@ -13,12 +12,15 @@ class Account {
   }
 
   readFromFile() {
-    return fs.readFileSync(url, "utf8");
+    this.accounts = fs.readFileSync(url, "utf8");
+    this.accounts = JSON.parse(this.accounts);
   }
 
   login(username, password) {
+    this.readFromFile();
     for (let i = 0; i < this.accounts.length; i++) {
       const account = this.accounts[i];
+
       if (account.username === username && account.password === password) {
         return true;
       }

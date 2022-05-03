@@ -1,0 +1,56 @@
+<h1>Create Wallet</h1>
+<div id="result">
+
+</div>
+<form id="register-form" class="form-horizontal container" method="post" action="/api/register">
+  <div class="form-group">
+    <label for="name" class="cols-sm-2 control-label">Your Password</label>
+    <div class="cols-sm-10">
+      <div class="input-group">
+       
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          id="password"
+          placeholder="Enter your Password"
+          required
+        />
+      </div>
+      <br/>
+      <div class="form-group">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg btn-block login-button"
+        >Register</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  </div>
+
+</form>
+
+<script>
+    $(document).ready(function() {
+
+        $("#register-form").submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/api/register",
+                data: $("#register-form").serialize(),
+                success: function(response) {
+                    $("#register-form").hide();
+                    $("#result").append(`<div class="alert alert-success">
+                    <strong>Success!</strong> You have been registered.
+                    </div>
+                    <div>Username: ${response.username}</div>
+                    <div>Password: ${response.password}</div>`);
+                }
+            });
+        });
+    });
+</script>

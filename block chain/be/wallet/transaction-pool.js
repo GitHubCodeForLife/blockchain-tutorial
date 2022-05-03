@@ -1,78 +1,100 @@
-const Transaction = require('./transaction');
+const Transaction = require("./transaction");
+const {
+  formatTransactions,
+  formatPendingTransactions,
+} = require("../app/utitls");
+class TransactionPool {
+  constructor() {
+    // represents a collections of transactions in the pool
+    this.transactions = [];
+  }
 
-class TransactionPool{
-    constructor(){
-        // represents a collections of transactions in the pool
-        this.transactions = [];
+  /**
+   * this method will add a transaction
+   * it is possible that the transaction exists already
+   * so it will replace the transaction with the new transaction
+   * after checking the input id and adding new outputs if any
+   * we call this method and replace the transaction in the pool
+   */
+  updateOrAddTransaction(transaction) {
+    // get the transaction while checking if it exists
+    let transactionWithId = this.transactions.find(
+      (t) => t.id === transaction.id
+    );
+
+    if (transactionWithId) {
+      this.transactions[this.transactions.indexOf(transactionWithId)] =
+        transaction;
+    } else {
+      this.transactions.push(transaction);
     }
+  }
 
-    /** 
-     * this method will add a transaction
-     * it is possible that the transaction exists already
-     * so it will replace the transaction with the new transaction
-     * after checking the input id and adding new outputs if any
-     * we call this method and replace the transaction in the pool
-     */
-    updateOrAddTransaction(transaction){
-        // get the transaction while checking if it exists
-        let transactionWithId = this.transactions.find(t => t.id === transaction.id);
+  /**
+   * returns a existing transaction from the pool
+   * if the inputs matches
+   */
 
-        if(transactionWithId){
-            this.transactions[this.transactions.indexOf(transactionWithId)] = transaction;
-        }
-        else{
-            this.transactions.push(transaction);
-        }
-    }
+  existingTransaction(address) {
+    return this.transactions.find((t) => t.input.address === address);
+  }
 
+  /**
+   * sends valid transactions to the miner
+   */
+
+  validTransactions() {
     /**
-     * returns a existing transaction from the pool
-     * if the inputs matches
+     * valid transactions are the one whose total output amounts to the input
+     * and whose signatures are same
      */
+    return this.transactions.filter((transaction) => {
+      // reduce function adds up all the items and saves it in variable
+      // passed in the arguments, second param is the initial value of the
+      // sum total
 
-    existingTransaction(address){
-        return this.transactions.find(t => t.input.address === address);
+      console.log({ output: transaction.outputs });
+
+      const outputTotal = transaction.outputs.reduce((total, output) => {
+        return total + output.amount;
+      }, 0);
+      if (transaction.input.amount !== outputTotal) {
+        console.log(`Invalid transaction from ${transaction.input.address}`);
+        return;
+      }
+      if (!Transaction.verifyTransaction(transaction)) {
+        console.log(`Invalid signature from ${transaction.input.address}`);
+        return;
+      }
+
+      return transaction;
+    });
+  }
+
+  clear() {
+    this.transactions = [];
+  }
+  isEmpty() {
+    return this.transactions.length === 0;
+  }
+  getAllTransactions() {
+    let transactions = [];
+    for (let i = 0; i < this.transactions.length; i++) {
+      const currentTransaction = this.transactions[i];
+      formatPendingTransactions(currentTransaction, transactions);
     }
-    
-    /**
-     * sends valid transactions to the miner
-     */
-
-    validTransactions(){
-        /**
-         * valid transactions are the one whose total output amounts to the input
-         * and whose signatures are same
-         */
-        return this.transactions.filter((transaction)=>{
-            
-            // reduce function adds up all the items and saves it in variable
-            // passed in the arguments, second param is the initial value of the 
-            // sum total
-
-            console.log({output: transaction.outputs});
-
-            const outputTotal = transaction.outputs.reduce((total,output)=>{
-                return total + output.amount;
-            },0)
-            console.log("Truoc khi so sanh ",outputTotal);
-            console.log("Sau khi so sanh ",transaction.input.amount);
-            if( transaction.input.amount !== outputTotal ){
-                console.log(`Invalid transaction from ${transaction.input.address}`);
-                return;
-            }
-            console.log("Truoc invalid signature Truoc invalid signature Truoc invalid signature Truoc invalid signature");
-            if(!Transaction.verifyTransaction(transaction)){
-                console.log(`Invalid signature from ${transaction.input.address}`);
-                return;
-            }
-
-            return transaction;
-        })
+    return transactions;
+  }
+  getTransaction(id) {
+    for (let i = 0; i < this.transactions.length; i++) {
+      const currentTransaction = this.transactions[i];
+      if (currentTransaction.id === id) {
+        currentTransaction.state = "pending";
+        return currentTransaction;
+      }
     }
-
-    clear(){
-        this.transactions = [];
-    }
+    return null;
+  }
 }
 
 module.exports = TransactionPool;

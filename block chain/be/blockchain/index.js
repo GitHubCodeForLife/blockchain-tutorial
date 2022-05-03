@@ -1,5 +1,9 @@
 const Block = require("./block");
-
+const {
+  formatTransactions,
+  formatSuccessTransactions,
+  formatString,
+} = require("../app/utitls");
 class Blockchain {
   constructor() {
     this.chain = [Block.genesis()];
@@ -53,6 +57,52 @@ class Blockchain {
 
     console.log("Replacing the current chain with new chain");
     this.chain = newChain;
+  }
+  getAllTransactions() {
+    let transactions = [];
+    for (let i = 1; i < this.chain.length; i++) {
+      const block = this.chain[i];
+      for (let j = 0; j < block.data.length; j++) {
+        const currentTransaction = block.data[j];
+        formatSuccessTransactions(currentTransaction, transactions);
+      }
+    }
+
+    return transactions;
+  }
+  getTransaction(id) {
+    for (let i = 0; i < this.chain.length; i++) {
+      const block = this.chain[i];
+      for (let j = 0; j < block.data.length; j++) {
+        const transaction = block.data[j];
+        if (transaction.id === id) {
+          transaction.state = "success";
+          return transaction;
+        }
+      }
+    }
+    return null;
+  }
+  getAllChains() {
+    let chains = [...this.chain];
+    chains = chains.map((chain) => {
+      chain.timestamp = new Date(chain.timestamp).toLocaleString();
+      chain.miner =
+        chain.data.length > 1 ? chain.data[1].outputs[0].address : "";
+      chain.miner = formatString(chain.miner);
+      return chain;
+    });
+    return chains;
+  }
+
+  getBlock(hash) {
+    for (let i = 0; i < this.chain.length; i++) {
+      const block = this.chain[i];
+      if (block.hash === hash) {
+        return block;
+      }
+    }
+    return null;
   }
 }
 
