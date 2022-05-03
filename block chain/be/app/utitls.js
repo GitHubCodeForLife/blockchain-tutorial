@@ -4,29 +4,58 @@ function formatString(str) {
   }
   return str + "";
 }
-function formatTransactions(currentTransaction, transactions, state) {
-  for (let j = 1; j < currentTransaction.outputs.length; j++) {
-    const transaction = {
-      from: formatString(currentTransaction.input.address),
-      to: formatString(currentTransaction.outputs[j].address),
-      amount: currentTransaction.outputs[j].amount,
-      id: currentTransaction.id,
-      state: state,
-      // convert timestamp to date
-      timestamp: new Date(currentTransaction.input.timestamp).toLocaleString(),
+function formatTransactions(currentTransaction, state) {
+  const copyCurrentTransaction = { ...currentTransaction };
+  const result = {
+    from: formatString(copyCurrentTransaction.from),
+    to: formatString(copyCurrentTransaction.to),
+    amount: copyCurrentTransaction.amount,
+    id: copyCurrentTransaction.id,
+    state: state,
+    timestamp: new Date(copyCurrentTransaction.timestamp).toLocaleString(),
+  };
+  return result;
+}
+
+function formatPendingTransactions(currentTransaction) {
+  return formatTransactions(currentTransaction, "pendding");
+}
+
+function formatSuccessTransactions(currentTransaction) {
+  return formatTransactions(currentTransaction, "success");
+}
+
+function takeTransactions(transaction) {
+  let result = [];
+  for (let j = 1; j < transaction.outputs.length; j++) {
+    const temp = {
+      id: transaction.id,
+      from: transaction.input.address,
+      amount: transaction.outputs[j].amount,
+      to: transaction.outputs[j].address,
+      timestamp: transaction.input.timestamp,
     };
-    transactions.push(transaction);
+    result = [...result, temp];
   }
+  return result;
 }
 
-function formatPendingTransactions(currentTransaction, transactions) {
-  formatTransactions(currentTransaction, transactions, "pendding");
-}
-
-function formatSuccessTransactions(currentTransaction, transactions) {
-  formatTransactions(currentTransaction, transactions, "success");
+function cleanData(transactions, type = "pending") {
+  transactions = transactions.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
+  transactions = transactions.map((transaction) => {
+    if (type === "pending") {
+      return formatPendingTransactions(transaction);
+    } else {
+      return formatSuccessTransactions(transaction);
+    }
+  });
+  return transactions;
 }
 
 exports.formatString = formatString;
 exports.formatPendingTransactions = formatPendingTransactions;
 exports.formatSuccessTransactions = formatSuccessTransactions;
+exports.takeTransactions = takeTransactions;
+exports.cleanData = cleanData;

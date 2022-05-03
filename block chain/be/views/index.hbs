@@ -3,5 +3,41 @@
 <div class="jumbotron">
   <strong>Public Key: {{publicKey}}</strong>
   <h5>Balance: {{balance}}</h5>
+
 </div>
-<p class="jumbotron">{{chains}}</p>
+{{#if historyTransactions}}
+<h1>History</h1>
+{{/if}}
+<ul class="listrap">
+
+ {{#each historyTransactions}}
+            <li>
+              <a href="/transaction/{{this.id}}">
+              <div class="listrap-toggle">
+                <span></span>
+                <img
+                  src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
+                  class="img-circle"
+                />
+              </div>
+              <strong>Id: {{this.id}}</strong>
+              <strong>From: {{this.from}}</strong>
+              <strong>To: {{this.to}}</strong>
+              <strong>Amount: {{this.amount}}</strong>
+              <strong>State: {{this.state}}</strong>
+              <div>
+                <p>{{this.timestamp}}</p>
+              <div>
+              
+               </a>
+            </li>
+          {{/each}}
+</ul>
+
+<br/>
+
+<div class="jumbotron">
+  <h1>All Block Chain</h1>
+  <p>{{chains}}</p>
+
+  </div>

@@ -103,6 +103,13 @@ app.get("/api/transactions", (req, res) => {
 // create transactions
 app.post("/api/transact", (req, res) => {
   const { recipient, amount } = req.body;
+  const currentAmount = wallet.calculateBalance(blockchain);
+  if (currentAmount < amount) {
+    return res.status(400).json({
+      message: "Cannot make transaction. Insufficient funds",
+    });
+  }
+
   console.log(`Recipient: ${recipient} | Amount: ${amount}`);
   const transaction = wallet.createTransaction(
     recipient,
@@ -160,12 +167,20 @@ const account = new Account();
 // account.saveToFile(wallet.publicKey);
 
 app.get("/", requireLogin, (req, res) => {
+  const successTransactions = blockchain.getHistoryTransactions(
+    wallet.publicKey
+  );
+  const penddingTransactions = transactionPool.getHistoryTransactions(
+    wallet.publicKey
+  );
+  const historyTransactions = [...successTransactions, ...penddingTransactions];
   res.render("index", {
     title: "Test",
     chains: JSON.stringify(blockchain.chain),
     publicKey: wallet.publicKey,
     balance: wallet.calculateBalance(blockchain),
     isLogin: true,
+    historyTransactions,
   });
 });
 
@@ -183,17 +198,30 @@ app.get("/logout", requireLogin, (req, res) => {
   res.redirect("/login");
 });
 app.get("/history", (req, res) => {
-  let chains = blockchain.getAllChains();
-  const pendingTransactions = transactionPool.getAllTransactions();
+  let chains = blockchain.getAllBlocks();
   const successTransactions = blockchain.getAllTransactions();
+  const pendingTransactions = transactionPool.getAllTransactions();
 
   const transactions = [...pendingTransactions, ...successTransactions];
+
   const isLogin = wallet ? true : false;
   res.render("history/index", {
     title: "History",
     chains,
     transactions,
     isLogin,
+  });
+});
+app.get("/api/get-history", (req, res) => {
+  const chains = blockchain.getAllBlocks();
+  const successTransactions = blockchain.getAllTransactions();
+
+  const pendingTransactions = transactionPool.getAllTransactions();
+
+  res.json({
+    chains,
+    pendingTransactions,
+    successTransactions,
   });
 });
 

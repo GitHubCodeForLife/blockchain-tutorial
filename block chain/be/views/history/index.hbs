@@ -11,21 +11,21 @@
           {{#each chains}}
             <li>
               <a href="/block/{{this.hash}}">
-               
-              <div class="listrap-toggle">
-                <span></span>
-                <img
-                  src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
-                  class="img-circle"
-                />
-              </div>
-              <strong>Hash: {{this.hash}}</strong>
 
-              <strong>Last Hash: {{this.lastHash}}</strong>
-              <strong>Miner:{{this.miner}}</strong>
-              <div>
-                <p>{{this.timestamp}}</p>
-              </div>
+                <div class="listrap-toggle">
+                  <span></span>
+                  <img
+                    src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
+                    class="img-circle"
+                  />
+                </div>
+                <strong>Hash: {{this.hash}}</strong>
+
+                <strong>Last Hash: {{this.lastHash}}</strong>
+                <strong>Miner:{{this.miner}}</strong>
+                <div>
+                  <p>{{this.timestamp}}</p>
+                </div>
               </a>
             </li>
           {{/each}}
@@ -44,24 +44,24 @@
         <ul class="listrap">
           {{#each transactions}}
             <li>
+
               <a href="/transaction/{{this.id}}">
-              <div class="listrap-toggle">
-                <span></span>
-                <img
-                  src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
-                  class="img-circle"
-                />
-              </div>
-              <strong>Id: {{this.id}}</strong>
-              <strong>From: {{this.from}}</strong>
-              <strong>To: {{this.to}}</strong>
-              <strong>Amount: {{this.amount}}</strong>
-              <strong>State: {{this.state}}</strong>
-              <div>
-                <p>{{this.timestamp}}</p>
-              <div>
-              
-               </a>
+                <div class="listrap-toggle">
+                  <span></span>
+                  <img
+                    src="https://image.shutterstock.com/image-vector/bk-letter-logo-design-vector-260nw-1602382030.jpg"
+                    class="img-circle"
+                  />
+                </div>
+                <strong>Id: {{this.id}}</strong>
+                <strong>From: {{this.from}}</strong>
+                <strong>To: {{this.to}}</strong>
+                <strong>Amount: {{this.amount}}</strong>
+                <strong>State: {{this.state}}</strong>
+                <div>
+                  <p>{{this.timestamp}}</p>
+                </div>
+              </a>
             </li>
           {{/each}}
 

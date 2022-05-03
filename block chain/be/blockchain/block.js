@@ -32,8 +32,7 @@ class Block {
    */
 
   static genesis() {
-    const currentTime = Date.now();
-    return new this(currentTime, "----", "f1574-h4gh", [], 0, DIFFICULTY);
+    return new this("Genesis time", "----", "f1574-h4gh", [], 0, DIFFICULTY);
   }
 
   /**

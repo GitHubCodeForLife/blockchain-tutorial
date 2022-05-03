@@ -1,8 +1,9 @@
 const Block = require("./block");
 const {
-  formatTransactions,
   formatSuccessTransactions,
   formatString,
+  takeTransactions,
+  cleanData,
 } = require("../app/utitls");
 class Blockchain {
   constructor() {
@@ -58,18 +59,22 @@ class Blockchain {
     console.log("Replacing the current chain with new chain");
     this.chain = newChain;
   }
+
+  //==========================================================
   getAllTransactions() {
-    let transactions = [];
-    for (let i = 1; i < this.chain.length; i++) {
-      const block = this.chain[i];
-      for (let j = 0; j < block.data.length; j++) {
-        const currentTransaction = block.data[j];
-        formatSuccessTransactions(currentTransaction, transactions);
+    let result = [];
+    const chainsCopy = [...this.chain];
+    for (let i = 0; i < chainsCopy.length; i++) {
+      for (let j = 0; j < chainsCopy[i].data.length; j++) {
+        let transaction = chainsCopy[i].data[j];
+        let temps = takeTransactions(transaction);
+        result = [...result, ...temps];
       }
     }
-
-    return transactions;
+    result = cleanData(result, "success");
+    return result;
   }
+
   getTransaction(id) {
     for (let i = 0; i < this.chain.length; i++) {
       const block = this.chain[i];
@@ -83,16 +88,33 @@ class Blockchain {
     }
     return null;
   }
-  getAllChains() {
-    let chains = [...this.chain];
-    chains = chains.map((chain) => {
-      chain.timestamp = new Date(chain.timestamp).toLocaleString();
-      chain.miner =
-        chain.data.length > 1 ? chain.data[1].outputs[0].address : "";
-      chain.miner = formatString(chain.miner);
-      return chain;
-    });
-    return chains;
+  getHistoryTransactions(address) {
+    let result = [];
+    const chainsCopy = [...this.chain];
+    for (let i = 0; i < chainsCopy.length; i++) {
+      for (let j = 0; j < chainsCopy[i].data.length; j++) {
+        const transaction = chainsCopy[i].data[j];
+        if (transaction.input.address === address) {
+          const temps = takeTransactions(transaction);
+          result = [...result, ...temps];
+        } else if (
+          transaction.outputs.find((output) => output.address === address)
+        ) {
+          const temps = takeTransactions(transaction);
+          result = [...result, ...temps];
+        }
+      }
+    }
+    result = cleanData(result, "success");
+    return result;
+  }
+  getAllBlocks() {
+    let blocks = [];
+    const chainsCopy = [...this.chain];
+    for (let i = 0; i < chainsCopy.length; i++) {
+      blocks.push(chainsCopy[i]);
+    }
+    return blocks;
   }
 
   getBlock(hash) {

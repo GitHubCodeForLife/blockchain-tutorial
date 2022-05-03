@@ -1,7 +1,8 @@
 const Transaction = require("./transaction");
 const {
-  formatTransactions,
+  takeTransactions,
   formatPendingTransactions,
+  cleanData,
 } = require("../app/utitls");
 class TransactionPool {
   constructor() {
@@ -77,23 +78,46 @@ class TransactionPool {
   isEmpty() {
     return this.transactions.length === 0;
   }
+
+  //==========================================================
   getAllTransactions() {
-    let transactions = [];
-    for (let i = 0; i < this.transactions.length; i++) {
-      const currentTransaction = this.transactions[i];
-      formatPendingTransactions(currentTransaction, transactions);
+    let result = [];
+    const transactionsCopy = [...this.transactions];
+    for (let i = 0; i < transactionsCopy.length; i++) {
+      let temps = takeTransactions(transactionsCopy[i]);
+      result = [...result, ...temps];
     }
-    return transactions;
+    result = cleanData(result);
+    return result;
   }
+
   getTransaction(id) {
-    for (let i = 0; i < this.transactions.length; i++) {
-      const currentTransaction = this.transactions[i];
-      if (currentTransaction.id === id) {
-        currentTransaction.state = "pending";
-        return currentTransaction;
+    const transactionsCopy = [...this.transactions];
+    for (let i = 0; i < transactionsCopy.length; i++) {
+      const transaction = transactionsCopy[i];
+      if (transaction.id === id) {
+        return transaction;
       }
     }
     return null;
+  }
+  getHistoryTransactions(address) {
+    let transactions = [];
+    const transactionsCopy = [...this.transactions];
+    for (let i = 0; i < transactionsCopy.length; i++) {
+      const transaction = transactionsCopy[i];
+      if (transaction.input.address === address) {
+        const temps = takeTransactions(transaction);
+        transactions = [...transactions, ...temps];
+      } else if (
+        transaction.outputs.find((output) => output.address === address)
+      ) {
+        const temps = takeTransactions(transaction);
+        transactions = [...transactions, ...temps];
+      }
+    }
+    transactions = cleanData(transactions);
+    return transactions;
   }
 }
 
