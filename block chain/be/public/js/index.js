@@ -4,8 +4,7 @@ $("document").ready(function () {
       url: "/api/mine-transactions",
       success: function (data) {
         alert("Mining successfully!");
-
-        location.reload();
+        location.href = "/history";
       },
       error: function (data) {
         console.log(data);
@@ -22,7 +21,7 @@ $("document").ready(function () {
       data: $("#send-form").serialize(),
       success: function (response) {
         setTimeout(function () {
-          location.reload();
+          location.href = "/history";
         }, 1000);
         $("#myModal").modal("hide");
         $("#result").append(

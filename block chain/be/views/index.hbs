@@ -1,8 +1,9 @@
-<br />
-<br />
+
 <div class="jumbotron">
-  <strong>Public Key: {{publicKey}}</strong>
-  <h5>Balance: {{balance}}</h5>
+  {{!-- <strong>Public Key: {{publicKey}}</strong>
+  <h5>Balance: {{balance}}</h5> --}}
+  <strong class="text-center text-primary">Public Key: {{publicKey}}</strong>
+  <h4 class="text-success" >Balance: {{balance}}</h4>
 
 </div>
 {{#if historyTransactions}}
@@ -12,7 +13,7 @@
 
  {{#each historyTransactions}}
             <li>
-              <a href="/transaction/{{this.id}}">
+              <a href="/transaction/{{this.id}}?index={{this.index}}">
               <div class="listrap-toggle">
                 <span></span>
                 <img
@@ -37,7 +38,10 @@
 <br/>
 
 <div class="jumbotron">
-  <h1>All Block Chain</h1>
-  <p>{{chains}}</p>
-
+  <h3 class="text-danger">All Block Chain</h3>
+  <pre>
+    <code>
+      {{chains}}
+    </code>
+  </pre>
   </div>

@@ -1,0 +1,48 @@
+<br />
+<h1>Transaction Details</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="span10" style="width: 100%">
+      <table class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>TimeStamp</td>
+            <td>{{transaction.timestamp}}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>
+              {{#if transaction.isPending}}
+                <span class="label label-warning">Pending</span>
+              {{else}}
+                <span class="label label-success">Success</span>
+              {{/if}}
+            </td>
+          </tr>
+          <tr>
+            <td>Id</td>
+            <td>{{transaction.id}}</td>
+          </tr>
+          <tr>
+            <td>From</td>
+            <td>{{transaction.from}}</td>
+          </tr>
+          <tr>
+            <td>To</td>
+            <td>{{transaction.to}}</td>
+          </tr>
+          <tr>
+            <td>Amount</td>
+            <td>{{transaction.amount}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

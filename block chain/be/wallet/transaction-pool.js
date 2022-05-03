@@ -82,7 +82,7 @@ class TransactionPool {
   //==========================================================
   getAllTransactions() {
     let result = [];
-    const transactionsCopy = [...this.transactions];
+    const transactionsCopy = JSON.parse(JSON.stringify(this.transactions));
     for (let i = 0; i < transactionsCopy.length; i++) {
       let temps = takeTransactions(transactionsCopy[i]);
       result = [...result, ...temps];
@@ -91,33 +91,40 @@ class TransactionPool {
     return result;
   }
 
-  getTransaction(id) {
-    const transactionsCopy = [...this.transactions];
+  getTransaction(id, index) {
+    const transactionsCopy = JSON.parse(JSON.stringify(this.transactions));
     for (let i = 0; i < transactionsCopy.length; i++) {
       const transaction = transactionsCopy[i];
       if (transaction.id === id) {
-        return transaction;
+        let result = takeTransactions(transaction);
+        result = result[index];
+        result.timestamp = new Date(result.timestamp).toLocaleString();
+        result.status = "pending";
+        return result;
       }
     }
     return null;
   }
   getHistoryTransactions(address) {
-    let transactions = [];
-    const transactionsCopy = [...this.transactions];
+    let result = [];
+    const transactionsCopy = JSON.parse(JSON.stringify(this.transactions));
     for (let i = 0; i < transactionsCopy.length; i++) {
       const transaction = transactionsCopy[i];
       if (transaction.input.address === address) {
         const temps = takeTransactions(transaction);
-        transactions = [...transactions, ...temps];
+        result = [...result, ...temps];
       } else if (
         transaction.outputs.find((output) => output.address === address)
       ) {
         const temps = takeTransactions(transaction);
-        transactions = [...transactions, ...temps];
+        if (temps[i].from === address || temps[i].to === address) {
+          temps[i].status = "success";
+          result = [...result, temps[i]];
+        }
       }
     }
-    transactions = cleanData(transactions);
-    return transactions;
+    result = cleanData(result);
+    return result;
   }
 }
 

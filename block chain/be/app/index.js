@@ -175,7 +175,7 @@ app.get("/", requireLogin, (req, res) => {
   );
   const historyTransactions = [...successTransactions, ...penddingTransactions];
   res.render("index", {
-    title: "Test",
+    title: "Home",
     chains: JSON.stringify(blockchain.chain),
     publicKey: wallet.publicKey,
     balance: wallet.calculateBalance(blockchain),
@@ -227,9 +227,10 @@ app.get("/api/get-history", (req, res) => {
 
 app.get("/block/:id", (req, res) => {
   const { id } = req.params;
-  const chain = JSON.stringify(blockchain.getBlock(id));
+  let chain = blockchain.getBlock(id);
+  chain.data = JSON.stringify(chain.data);
   const isLogin = wallet ? true : false;
-  res.render("detail", {
+  res.render("details/block", {
     title: "Blocks",
     content: chain,
     isLogin,
@@ -238,16 +239,21 @@ app.get("/block/:id", (req, res) => {
 
 app.get("/transaction/:id", (req, res) => {
   const { id } = req.params;
-  let transaction = blockchain.getTransaction(id);
-  const penddingTransactions = transactionPool.getTransaction(id);
+  const { index } = req.query;
+  console.log({ id, index });
+  let transaction = blockchain.getTransaction(id, parseInt(index));
+  const penddingTransactions = transactionPool.getTransaction(
+    id,
+    parseInt(index)
+  );
 
   transaction = transaction ? transaction : penddingTransactions;
-  transaction = JSON.stringify(transaction);
+  transaction.isPending = transaction.status === "pending" ? true : false;
 
   const isLogin = wallet ? true : false;
-  res.render("detail", {
+  res.render("details/transaction", {
     title: "Transactions",
-    content: transaction,
+    transaction,
     isLogin,
   });
 });

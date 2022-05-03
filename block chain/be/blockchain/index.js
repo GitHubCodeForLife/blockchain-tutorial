@@ -58,7 +58,8 @@ class Blockchain {
   //==========================================================
   getAllTransactions() {
     let result = [];
-    const chainsCopy = [...this.chain];
+    const chainsCopy = JSON.parse(JSON.stringify(this.chain));
+
     for (let i = 0; i < chainsCopy.length; i++) {
       for (let j = 0; j < chainsCopy[i].data.length; j++) {
         let transaction = chainsCopy[i].data[j];
@@ -70,14 +71,18 @@ class Blockchain {
     return result;
   }
 
-  getTransaction(id) {
-    for (let i = 0; i < this.chain.length; i++) {
-      const block = this.chain[i];
+  getTransaction(id, index) {
+    const chainsCopy = JSON.parse(JSON.stringify(this.chain));
+    for (let i = 0; i < chainsCopy.length; i++) {
+      const block = chainsCopy[i];
       for (let j = 0; j < block.data.length; j++) {
         const transaction = block.data[j];
         if (transaction.id === id) {
-          transaction.state = "success";
-          return transaction;
+          let result = takeTransactions(transaction);
+          result = result[index];
+          result.timestamp = new Date(result.timestamp).toLocaleString();
+          result.status = "success";
+          return result;
         }
       }
     }
@@ -85,7 +90,7 @@ class Blockchain {
   }
   getHistoryTransactions(address) {
     let result = [];
-    const chainsCopy = [...this.chain];
+    const chainsCopy = JSON.parse(JSON.stringify(this.chain));
     for (let i = 0; i < chainsCopy.length; i++) {
       for (let j = 0; j < chainsCopy[i].data.length; j++) {
         const transaction = chainsCopy[i].data[j];
@@ -96,7 +101,12 @@ class Blockchain {
           transaction.outputs.find((output) => output.address === address)
         ) {
           const temps = takeTransactions(transaction);
-          result = [...result, ...temps];
+          for (let i = 0; i < temps.length; i++) {
+            if (temps[i].from === address || temps[i].to === address) {
+              temps[i].status = "success";
+              result = [...result, temps[i]];
+            }
+          }
         }
       }
     }
@@ -105,7 +115,7 @@ class Blockchain {
   }
   getAllBlocks() {
     let blocks = [];
-    const chainsCopy = [...this.chain];
+    const chainsCopy = JSON.parse(JSON.stringify(this.chain));
 
     for (let i = chainsCopy.length - 1; i >= 0; i--) {
       blocks = [...blocks, chainsCopy[i]];
@@ -117,10 +127,11 @@ class Blockchain {
   }
 
   getBlock(hash) {
-    for (let i = 0; i < this.chain.length; i++) {
-      const block = this.chain[i];
+    const chainsCopy = JSON.parse(JSON.stringify(this.chain));
+    for (let i = 0; i < chainsCopy.length; i++) {
+      const block = chainsCopy[i];
       if (block.hash === hash) {
-        return formatBlock(block, true);
+        return { ...formatBlock(block, true) };
       }
     }
     return null;

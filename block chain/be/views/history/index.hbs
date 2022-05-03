@@ -44,8 +44,7 @@
         <ul class="listrap">
           {{#each transactions}}
             <li>
-
-              <a href="/transaction/{{this.id}}">
+              <a href="/transaction/{{this.id}}?index={{this.index}}">
                 <div class="listrap-toggle">
                   <span></span>
                   <img
@@ -64,7 +63,6 @@
               </a>
             </li>
           {{/each}}
-
         </ul>
       </div>
     </div>

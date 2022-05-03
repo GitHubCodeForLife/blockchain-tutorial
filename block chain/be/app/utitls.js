@@ -13,6 +13,7 @@ function formatTransactions(currentTransaction, state) {
     id: copyCurrentTransaction.id,
     state: state,
     timestamp: new Date(copyCurrentTransaction.timestamp).toLocaleString(),
+    index: copyCurrentTransaction.index,
   };
   return result;
 }
@@ -34,6 +35,7 @@ function takeTransactions(transaction) {
       amount: transaction.outputs[j].amount,
       to: transaction.outputs[j].address,
       timestamp: transaction.input.timestamp,
+      index: j - 1,
     };
     result = [...result, temp];
   }
