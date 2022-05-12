@@ -42,6 +42,18 @@ function takeTransactions(transaction) {
   return result;
 }
 
+function takeTransactionReward(transaction) {
+  const temp = {
+    id: transaction.id,
+    from: "SYSTEM REWARD FOR MINING",
+    amount: transaction.outputs[0].amount,
+    to: transaction.outputs[0].address,
+    timestamp: transaction.input.timestamp,
+    index: 0,
+  };
+  return temp;
+}
+
 function cleanData(transactions, type = "pending") {
   transactions = transactions.sort((a, b) => {
     return b.timestamp - a.timestamp;
@@ -75,3 +87,4 @@ exports.formatSuccessTransactions = formatSuccessTransactions;
 exports.takeTransactions = takeTransactions;
 exports.cleanData = cleanData;
 exports.formatBlock = formatBlock;
+exports.takeTransactionReward = takeTransactionReward;

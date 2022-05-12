@@ -45,3 +45,14 @@ To start run the following command:
 Tham khảo:
 https://github.com/kashishkhullar/blockchain-nodejs
 ```
+
+Kịch bản demo:
+
+- Giới thiệu file config và các tham số
+- Chạy chương trình 3 server nodejs
+- Tạo ví mới
+- Gửi coin cho ví khác
+- Xem lịch sử giao dịch
+- Xem thống kê tài khoản
+
+'''

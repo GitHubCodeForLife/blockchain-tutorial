@@ -1,5 +1,10 @@
 const Block = require("./block");
-const { takeTransactions, cleanData, formatBlock } = require("../app/utitls");
+const {
+  takeTransactions,
+  cleanData,
+  formatBlock,
+  takeTransactionReward,
+} = require("../app/utitls");
 class Blockchain {
   constructor() {
     this.chain = [Block.genesis()];
@@ -64,6 +69,7 @@ class Blockchain {
       for (let j = 0; j < chainsCopy[i].data.length; j++) {
         let transaction = chainsCopy[i].data[j];
         let temps = takeTransactions(transaction);
+        if (j == 1) temps = [...temps, takeTransactionReward(transaction)];
         result = [...result, ...temps];
       }
     }
@@ -79,6 +85,7 @@ class Blockchain {
         const transaction = block.data[j];
         if (transaction.id === id) {
           let result = takeTransactions(transaction);
+          if (j === 1) result = [...result, takeTransactionReward(transaction)];
           result = result[index];
           result.timestamp = new Date(result.timestamp).toLocaleString();
           result.status = "success";
@@ -90,6 +97,9 @@ class Blockchain {
   }
   getHistoryTransactions(address) {
     let result = [];
+    //Deep copy
+    //Shallow copy
+    //
     const chainsCopy = JSON.parse(JSON.stringify(this.chain));
     for (let i = 0; i < chainsCopy.length; i++) {
       for (let j = 0; j < chainsCopy[i].data.length; j++) {
@@ -100,7 +110,10 @@ class Blockchain {
         } else if (
           transaction.outputs.find((output) => output.address === address)
         ) {
-          const temps = takeTransactions(transaction);
+          let temps = takeTransactions(transaction);
+          if (j == 1) temps = [...temps, takeTransactionReward(transaction)];
+
+          console.log("Temps: " + JSON.stringify(temps));
           for (let i = 0; i < temps.length; i++) {
             if (temps[i].from === address || temps[i].to === address) {
               temps[i].status = "success";
